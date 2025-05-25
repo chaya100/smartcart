@@ -1,5 +1,6 @@
-import express from 'express';
-const router = express.Router();
+import { Router } from 'express';
+
+const router = Router();
 
 // Get all supermarkets
 router.get('/', (req, res) => {

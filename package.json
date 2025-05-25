@@ -1,18 +1,17 @@
 {
-  "name": "supermarket-prices",
+  "name": "smartcart",
+  "version": "1.0.0",
+  "description": "Smartcart with backend, frontend, and shared packages",
   "private": true,
-  "repository": "git@github.com:diversi-tech/smartcart.git",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "start:backend": "yarn workspace backend start",
-    "start:frontend": "yarn workspace frontend start",
-    "dev:backend": "yarn workspace backend dev",
-    "dev:frontend": "yarn workspace frontend start",
-    "dev": "concurrently \"yarn dev:backend\" \"yarn dev:frontend\"",
-    "build": "yarn workspaces run build",
-    "seed": "yarn workspace backend seed"
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=packages/backend",
+    "dev:frontend": "npm run start --workspace=packages/frontend",
+    "build": "npm run build --workspace=packages/backend && npm run build --workspace=packages/frontend",
+    "install:all": "npm install && npm install --workspace=packages/backend && npm install --workspace=packages/frontend && npm install --workspace=packages/shared"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

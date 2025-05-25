@@ -1,5 +1,6 @@
-import express from 'express';
-const router = express.Router();
+import { Router } from 'express';
+
+const router = Router();
 
 // Get all promotions
 router.get('/', (req, res) => {

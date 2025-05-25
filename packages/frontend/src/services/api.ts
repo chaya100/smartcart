@@ -1,24 +1,48 @@
 import axios from 'axios';
-import { StoreItem } from '../types';
+import { GroceryItem, ItemResponse, ItemsResponse } from '@smartcart/shared';
 
-// Get the API URL from environment variables, default to localhost for development
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.REACT_APP_API_URL;
 
-// Create an axios instance with default config
-const api = axios.create({
+const apiClient = axios.create({
   baseURL: API_URL,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Function to fetch a store item by ID
-export const getItemById = async (id: number): Promise<StoreItem> => {
-  try {
-    const response = await api.get<StoreItem>(`/items/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching item:', error);
-    throw error;
+// Response interceptor for error handling
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error);
+    return Promise.reject(error);
   }
+);
+
+export const apiService = {
+  // Health check
+  checkHealth: async () => {
+    const response = await apiClient.get('/health');
+    return response.data;
+  },
+
+
+  // Get specific item
+  getItems: async (): Promise<GroceryItem[]> => {
+    const response = await apiClient.get<ItemsResponse>(`/items/`);
+    if (response.data.success && response.data.data) {
+      return response.data.data;
+    }
+    throw new Error(response.data.error || 'Failed to fetch item');
+  },
+
+  getItem: async (item_id: string): Promise<GroceryItem> => {
+    const response = await apiClient.get<ItemResponse>(`/items/${item_id}`);
+    if (response.data.success && response.data.data) {
+      return response.data.data;
+    }
+    throw new Error(response.data.error || 'Failed to fetch item');
+  },
+
 };

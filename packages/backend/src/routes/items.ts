@@ -1,51 +1,79 @@
-import express from 'express';
-const router = express.Router();
+import { Router } from 'express';
+import { ItemsResponse, GroceryItem, ItemType, UnitType, StoreChain } from '@smartcart/shared';
+import { databaseService } from '../services/database';
 
-// Get all items
-router.get('/', (req, res) => {
-  res.json({ message: 'Get all items' });
+const router = Router();
+
+// Fallback mock data (used if database is not available)
+const mockItems: GroceryItem[] = [
+  {
+    itemCode: '1',
+    itemName: 'Laptop',
+    itemNameHebrew: 'מחשב נייד',
+    price: 1200,
+    unitPrice: 1200,
+    description: 'High-performance laptop',
+    quantity: 1,
+    unitQuantity: UnitType.PIECE,
+    unitOfMeasure: 'unit',
+    unitOfMeasureNormalized: 'unit',
+    isWeighted: false,
+    itemType: ItemType.REGULAR,
+    lastUpdated: new Date(),
+    storeChain: StoreChain.UNKNOWN,
+    manufacturer: 'TechCorp',
+    manufacturerCountry: 'USA'
+  },
+  {
+    itemCode: '2',
+    itemName: 'Coffee Beans',
+    itemNameHebrew: 'פולי קפה',
+    price: 25,
+    unitPrice: 25,
+    description: 'Premium coffee beans',
+    quantity: 1,
+    unitQuantity: UnitType.KILOGRAM,
+    unitOfMeasure: 'kg',
+    unitOfMeasureNormalized: 'kg',
+    isWeighted: true,
+    itemType: ItemType.WEIGHTED,
+    lastUpdated: new Date(),
+    storeChain: StoreChain.UNKNOWN,
+    manufacturer: 'CoffeeCo',
+    manufacturerCountry: 'Brazil'
+  }
+];
+
+// Determine if we should use database or mock data
+const useDatabase = !!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY);
+
+// GET /api/items - Get all items
+router.get('/', async (req, res) => {
+  try {
+    let items: GroceryItem[];
+    
+    if (useDatabase) {
+      items = await databaseService.getAllItems();
+    } else {
+      console.log('Using mock data - database not configured');
+      items = mockItems;
+    }
+
+    const response: ItemsResponse = {
+      success: true,
+      data: items
+    };
+    res.json(response);
+  } catch (error) {
+    console.error('Error fetching items:', error);
+    
+    // Fallback to mock data if database fails
+    const response: ItemsResponse = {
+      success: true,
+      data: mockItems
+    };
+    res.json(response);
+  }
 });
 
-// Get item by ID
-router.get('/:id', (req, res) => {
-  const mockItem = {
-    itemId: parseInt(req.params.id, 10),
-    itemCode: '34291242',
-    itemName: 'Icecream',
-    price: 99.99,
-    category: 'Frozen food'
-  };
-  res.json(mockItem);
-});
-
-// Search items
-router.get('/search', (req, res) => {
-  const { query } = req.query;
-  res.json({ message: 'Search items', query });
-});
-
-// Get items by category
-router.get('/category/:category', (req, res) => {
-  res.json({ message: `Get items in category ${req.params.category}` });
-});
-
-// Compare item prices across stores
-router.get('/compare/:id', (req, res) => {
-  const { stores } = req.query;
-  res.json({ 
-    message: `Compare item ${req.params.id}`,
-    stores: stores?.toString().split(',')
-  });
-});
-
-// Get item price history
-router.get('/:id/price-history', (req, res) => {
-  res.json({ message: `Get price history for item ${req.params.id}` });
-});
-
-// Get alternative items
-router.get('/:id/alternatives', (req, res) => {
-  res.json({ message: `Get alternatives for item ${req.params.id}` });
-});
-
-export default router; 
+export default router;
