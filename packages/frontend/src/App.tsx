@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { GroceryItem } from '@smartcart/shared';
+import { Item } from '@smartcart/shared';
 import { apiService } from './services/api';
 import ItemCard from './components/ItemCard';
 import './App.css';
 
 function App() {
-  const [items, setItems] = useState<GroceryItem[]>([]);
-  const [selectedItem, setSelectedItem] = useState<GroceryItem | null>(null);
+  const [items, setItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [healthStatus, setHealthStatus] = useState<string>('checking...');
@@ -38,9 +38,9 @@ function App() {
     }
   };
 
-  const handleItemClick = async (item: GroceryItem) => {
+  const handleItemClick = async (item: Item) => {
     try {
-      const fullItem = await apiService.getItem(item.itemCode);
+      const fullItem = await apiService.getItem(item.id);
       setSelectedItem(fullItem);
     } catch (err) {
       console.error('Failed to fetch item details:', err);
@@ -133,7 +133,7 @@ function App() {
               }}>
                 {items.map((item) => (
                   <ItemCard 
-                    key={item.itemCode} 
+                    key={item.id} 
                     item={item} 
                     onClick={handleItemClick}
                   />

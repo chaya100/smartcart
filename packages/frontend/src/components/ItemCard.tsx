@@ -1,9 +1,9 @@
 import React from 'react';
-import { GroceryItem } from '@smartcart/shared';
+import { Item } from '@smartcart/shared';
 
 interface ItemCardProps {
-  item: GroceryItem;
-  onClick?: (item: GroceryItem) => void;
+  item: Item;
+  onClick?: (item: Item) => void;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({ item, onClick }) => {
@@ -35,33 +35,15 @@ const ItemCard: React.FC<ItemCardProps> = ({ item, onClick }) => {
         }
       }}
     >
-      <h3 style={{ margin: '0 0 8px 0', color: '#333' }}>{item.itemName}</h3>
+      <h3 style={{ margin: '0 0 8px 0', color: '#333' }}>{item.name}</h3>
       <p style={{ margin: '4px 0', color: '#666' }}>
-        <strong>Hebrew Name:</strong> {item.itemNameHebrew}
+        <strong>Type:</strong> {item.type}
       </p>
       <p style={{ margin: '4px 0', color: '#666' }}>
-        <strong>Price:</strong> ₪{item.price.toFixed(2)}
+        <strong>Amount:</strong> ${item.amount}
       </p>
-      <p style={{ margin: '4px 0', color: '#666' }}>
-        <strong>Unit Price:</strong> ₪{item.unitPrice.toFixed(2)} / {item.unitOfMeasure}
-      </p>
-      {item.manufacturer && (
-        <p style={{ margin: '4px 0', color: '#666' }}>
-          <strong>Manufacturer:</strong> {item.manufacturer}
-          {item.manufacturerCountry && ` (${item.manufacturerCountry})`}
-        </p>
-      )}
-      <p style={{ margin: '4px 0', color: '#666' }}>
-        <strong>Store:</strong> {item.storeChain}
-      </p>
-      {item.category && (
-        <p style={{ margin: '4px 0', color: '#666' }}>
-          <strong>Category:</strong> {item.category}
-          {item.subcategory && ` - ${item.subcategory}`}
-        </p>
-      )}
       <p style={{ margin: '4px 0', fontSize: '12px', color: '#999' }}>
-        Item Code: {item.itemCode}
+        ID: {item.id}
       </p>
     </div>
   );

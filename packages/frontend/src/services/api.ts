@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GroceryItem, ItemResponse, ItemsResponse } from '@smartcart/shared';
+import { Item, ItemsResponse, ItemResponse } from '@smartcart/shared';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -27,22 +27,21 @@ export const apiService = {
     return response.data;
   },
 
+  // Get all items
+  getItems: async (): Promise<Item[]> => {
+    const response = await apiClient.get<ItemsResponse>('/items');
+    if (response.data.success && response.data.data) {
+      return response.data.data;
+    }
+    throw new Error(response.data.error || 'Failed to fetch items');
+  },
 
   // Get specific item
-  getItems: async (): Promise<GroceryItem[]> => {
-    const response = await apiClient.get<ItemsResponse>(`/items/`);
+  getItem: async (id: string): Promise<Item> => {
+    const response = await apiClient.get<ItemResponse>(`/items/${id}`);
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
     throw new Error(response.data.error || 'Failed to fetch item');
   },
-
-  getItem: async (item_id: string): Promise<GroceryItem> => {
-    const response = await apiClient.get<ItemResponse>(`/items/${item_id}`);
-    if (response.data.success && response.data.data) {
-      return response.data.data;
-    }
-    throw new Error(response.data.error || 'Failed to fetch item');
-  },
-
 };

@@ -166,13 +166,13 @@ export enum ProductCategory {
   UNKNOWN = 'unknown'
 }
 
-export interface ItemsResponse {
+export interface GroceryItemsResponse {
   success: boolean;
   data?: GroceryItem[];
   error?: string;
 }
 
-export interface ItemResponse {
+export interface GroceryItemResponse {
   success: boolean;
   data?: GroceryItem;
   error?: string;

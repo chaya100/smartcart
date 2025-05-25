@@ -1,8 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { GroceryItem, ItemType, StoreChain, UnitType } from '@smartcart/shared';
+import { Item } from '@smartcart/shared';
 
 export class DatabaseService {
-  private readonly tableName = 'grocery_items';
+  private readonly tableName = 'items';
   private supabase: SupabaseClient | null = null;
 
   private getClient(): SupabaseClient {
@@ -23,7 +23,7 @@ export class DatabaseService {
     return this.getClient() !== null;
   }
 
-  async getAllItems(): Promise<GroceryItem[]> {
+  async getAllItems(): Promise<Item[]> {
     try {
       const { data, error } = await this.getClient()
         .from(this.tableName)
@@ -42,7 +42,7 @@ export class DatabaseService {
     }
   }
 
-  async getItemById(id: string): Promise<GroceryItem | null> {
+  async getItemById(id: string): Promise<Item | null> {
     try {
       const { data, error } = await this.getClient()
         .from(this.tableName)
@@ -65,7 +65,7 @@ export class DatabaseService {
     }
   }
 
-  async createItem(item: Omit<GroceryItem, 'id'>): Promise<GroceryItem> {
+  async createItem(item: Omit<Item, 'id'>): Promise<Item> {
     try {
       const { data, error } = await this.getClient()
         .from(this.tableName)
@@ -93,43 +93,11 @@ export class DatabaseService {
       if (items.length === 0) {
         console.log('Initializing database with sample data...');
         
-        const sampleItems: GroceryItem[] = [
-          {
-            itemCode: '1',
-            itemName: 'Laptop',
-            itemNameHebrew: 'מחשב נייד',
-            price: 1200,
-            unitPrice: 1200,
-            description: 'High-performance laptop',
-            quantity: 1,
-            unitQuantity: UnitType.PIECE,
-            unitOfMeasure: 'unit',
-            unitOfMeasureNormalized: 'unit',
-            isWeighted: false,
-            itemType: ItemType.REGULAR,
-            lastUpdated: new Date(),
-            storeChain: StoreChain.UNKNOWN,
-            manufacturer: 'TechCorp',
-            manufacturerCountry: 'USA'
-          },
-          {
-            itemCode: '2',
-            itemName: 'Coffee Beans',
-            itemNameHebrew: 'פולי קפה',
-            price: 25,
-            unitPrice: 25,
-            description: 'Premium coffee beans',
-            quantity: 1,
-            unitQuantity: UnitType.KILOGRAM,
-            unitOfMeasure: 'kg',
-            unitOfMeasureNormalized: 'kg',
-            isWeighted: true,
-            itemType: ItemType.WEIGHTED,
-            lastUpdated: new Date(),
-            storeChain: StoreChain.UNKNOWN,
-            manufacturer: 'CoffeeCo',
-            manufacturerCountry: 'Brazil'
-          }
+        const sampleItems = [
+          { name: 'Laptop', type: 'Electronics', amount: 1200 },
+          { name: 'Coffee Beans', type: 'Food', amount: 25 },
+          { name: 'Office Chair', type: 'Furniture', amount: 350 },
+          { name: 'Notebook', type: 'Stationery', amount: 15 }
         ];
 
         for (const item of sampleItems) {
