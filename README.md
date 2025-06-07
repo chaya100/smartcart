@@ -21,7 +21,7 @@ npm run install:all
 cd packages/shared && npm run build && cd ../..
 
 # Set up environment files
-cd packages/backend && cp .env.example .env
+cd packages/backend && cp .env.example .env #for windows cp=copy
 cd ../frontend && cp .env.example .env && cd ../..
 
 # Start both frontend and backend
