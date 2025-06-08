@@ -10,6 +10,7 @@ interface FileInfo {
     fileType: string;
   }
   
+  // This is an example site
   const BASE_URL = 'http://141.226.203.152/';
   
   /**

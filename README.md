@@ -2,7 +2,7 @@
 
 A full-stack TypeScript monorepo with Express backend, React frontend, and Supabase database.
 
-## 🚀 Quick Start
+## 🚀 Quick Start (local setup)
 
 **Required tools:**
 - Node.js 22+ 
@@ -33,7 +33,7 @@ npm run dev
 - Backend API: http://localhost:3001/api
 - Health check: http://localhost:3001/api/health
 
-## 📋 Table of Contents
+## 📋 Production setup
 
 - [🏗️ Architecture Overview](#️-architecture-overview)
 - [🔧 Prerequisites](#-prerequisites)
@@ -51,7 +51,7 @@ npm run dev
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Backend       │    │   Database      │
-│   (Netlify)      │───▶│   (Render)      │───▶│   (Supabase)    │
+│   (Netlify)     │───▶│   (Render)      │───▶│   (Supabase)    │
 │   React + TS    │    │   Express + TS  │    │   PostgreSQL    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
