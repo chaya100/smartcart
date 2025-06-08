@@ -29,6 +29,12 @@ const mockItems: Item[] = [
     name: 'Notebook',
     type: 'Stationery',
     amount: 15
+  },
+  {
+    id:'5',
+    name: 'Bike',
+    type: 'Toys Shop',
+    amount: 250
   }
 ];
 
